@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_todo.view.*
 
@@ -48,10 +50,12 @@ class TodoAdapter(
     override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
         val curTodo = todos[position] //reference to corresponding to do item
 
+
         //we need to always have holder.itemView before we use views
         holder.itemView.apply {
             tvTodoTitle.text = curTodo.title //sets title of to do item to text in text view
             cbDone.isChecked = curTodo.isChecked
+
             toggleStrikeThrough(tvTodoTitle, curTodo.isChecked)
             cbDone.setOnCheckedChangeListener { _, isChecked ->
                 toggleStrikeThrough(tvTodoTitle, isChecked)
