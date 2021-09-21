@@ -12,10 +12,26 @@ import kotlinx.android.synthetic.main.item_todo.view.*
 
 //contains main logic of app
 class TodoAdapter(
-    private val todos: MutableList<Todo> //To do class created in Todo.kt
-) : RecyclerView.Adapter<TodoAdapter.TodoViewHolder>() {
+    private val todos: MutableList<Todo>, //To do class created in Todo.kt
+    private val listener: OnItemClickListener ) : RecyclerView.Adapter<TodoAdapter.TodoViewHolder>() {
 
-    class TodoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) //created by below function
+    inner class TodoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            val position: Int = adapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                listener.onItemClick(position)
+            }
+        }
+
+    }
+    interface OnItemClickListener {
+        fun onItemClick(position: Int)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
         return TodoViewHolder(
@@ -50,7 +66,6 @@ class TodoAdapter(
     override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
         val curTodo = todos[position] //reference to corresponding to do item
 
-
         //we need to always have holder.itemView before we use views
         holder.itemView.apply {
             tvTodoTitle.text = curTodo.title //sets title of to do item to text in text view
@@ -67,6 +82,11 @@ class TodoAdapter(
     override fun getItemCount(): Int {
         return todos.size
     }
+
+    interface OnNoteListener {
+        fun onItemClick(position: Int)
+    } //detects click, used to send position of clicked item
+
 }
 
 
